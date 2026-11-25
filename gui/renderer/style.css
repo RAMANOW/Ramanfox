@@ -374,6 +374,14 @@ body.idle .zzz i { animation-play-state: paused; }
 .seg.three .thumb { width: calc((100% - 8px) / 3); }
 .seg.three[data-v="2"] .thumb { transform: translateX(calc(200% * var(--x))); }
 .seg.three[data-v="-1"] .thumb { opacity: 0; }
+/* Raman Fox: four languages (فارسی, کوردی, English, Русский) */
+.seg.four .thumb { width: calc((100% - 8px) / 4); }
+.seg.four[data-v="2"] .thumb { transform: translateX(calc(200% * var(--x))); }
+.seg.four[data-v="3"] .thumb { transform: translateX(calc(300% * var(--x))); }
+.seg.small.four button { padding: 7px 11px; }
+.seg.small.four[data-v="2"] .thumb, .seg.small.four[data-v="3"] .thumb { background: linear-gradient(135deg, var(--mint), var(--sky)); }
+.seg.small.four[data-v="3"] button:nth-of-type(4) { color: #08100d; }
+.about .credit { font-size: 11px; opacity: 0.8; }
 .seg[data-v="2"] button:nth-of-type(3), .seg.small[data-v="2"] button:nth-of-type(3) { color: #08100d; }
 #net-rule { margin-top: 10px; }
 .mode { margin-top: 14px; }

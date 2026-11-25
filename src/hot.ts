@@ -77,8 +77,15 @@ function keptHot(): Hot | null {
   return kept;
 }
 
+/**
+ * Raman Fox: the hot config channel is switched off. Foxhole's hot.json is signed by Foxhole's developer and fetched
+ * from Foxhole's repo; Raman Fox never fetches it, never reads one kept on disk, and always runs on its built-in values.
+ */
+export const HOT_DISABLED = true;
+
 /** The hot config in force: the newest that verified, till it expires; null: the built-in values. */
 export function hot(): Hot | null {
+  if (HOT_DISABLED) return null;
   const h = keptHot();
   return h && !(h.expires && Date.parse(h.expires) <= Date.now()) ? h : null;
 }
@@ -126,7 +133,8 @@ async function fetchHot(): Promise<{ text: string; hot: Hot } | null> {
  * minutes after one didn't come (by then it may come through the VPN). After one comes, not again for an hour. In
  * the background: it never throws.
  */
-export const refreshHot = (): Promise<void> => refresh().catch((e) => log(`hot config: ${(e as Error).message}`));
+export const refreshHot = (): Promise<void> =>
+  HOT_DISABLED ? Promise.resolve() : refresh().catch((e) => log(`hot config: ${(e as Error).message}`));
 
 async function refresh(): Promise<void> {
   if (Date.now() - gotAt < HOUR) return;

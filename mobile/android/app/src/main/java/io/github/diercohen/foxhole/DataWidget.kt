@@ -27,7 +27,7 @@ class DataWidget : AppWidgetProvider() {
       val s = Status.read(ctx)
       return RemoteViews(ctx.packageName, R.layout.data_widget).apply {
         setImageViewBitmap(R.id.ring, ring(s.fraction, s.on))
-        setTextViewText(R.id.left, s.left.ifEmpty { "Foxhole" })
+        setTextViewText(R.id.left, s.left.ifEmpty { "Raman Fox" })
         val w = Status.words(ctx)
         setTextViewText(R.id.state, w.getString(if (s.busy) R.string.connecting else if (s.on) R.string.on_at else if (s.paused) R.string.paused else R.string.widget_off, s.where))
         setOnClickPendingIntent(R.id.widget, PendingIntent.getActivity(ctx, 0, Intent(ctx, FoxholeActivity::class.java), PendingIntent.FLAG_IMMUTABLE))

@@ -18,6 +18,7 @@ import { PageSignIn } from "./dist/fxalogin.js";
 import { log } from "./dist/log.js";
 import "./fa.js"; // foxholeCountry, foxholeWords: for Settings → Language (prepare.mjs copies them from gui/renderer)
 import "./ru.js";
+import "./ckb.js"; // Raman Fox: Kurdish Sorani (falls back to Persian)
 
 net.setDefaultAutoSelectFamilyAttemptTimeout(3000); // as cli.ts: far VPN servers take 600-900 ms to answer
 useFastlyFallback(); // where the network drops Fastly's addresses Mozilla's hosts get (dns.ts)
@@ -247,9 +248,11 @@ function push() {
     page = null; // signed in with what the sign-in page handed over: it's done
     send({ t: "signIn", open: false });
   }
-  const t = foxholeWords(s.settings?.lang);
+  const t0 = foxholeWords(s.settings?.lang ?? "fa"); // Raman Fox: Persian until Settings says otherwise
+  const RTL = !s.settings?.lang || s.settings.lang === "fa" || s.settings.lang === "ckb";
+  const t = (...a) => t0(...a).replace(/Foxhole(?! Relay CA)/g, RTL ? "رامان فاکس" : "Raman Fox"); // the name shown is Raman Fox's
   // in the language Settings has (no Intl here for country names: fa.js and ru.js have them); the relay's row is "Relay"
-  const place = (code) => foxholeCountry(s.settings?.lang, code) || (s.countries.find((c) => c.code === code)?.name ?? "");
+  const place = (code) => foxholeCountry(s.settings?.lang ?? "fa", code) || (s.countries.find((c) => c.code === code)?.name ?? "");
   // with no internet: connected, it carries on by itself once it's back (s.lost); a connect waits for it (s.offline),
   // kept running meanwhile, its Resume a Try again and its Disconnect a Cancel
   const note = s.active
@@ -280,7 +283,7 @@ function push() {
       left: !u ? "" : u.unlimited ? t`Unlimited` : t`${u.left} left`,
       fraction: !u ? -1 : u.unlimited ? 1 : u.fraction,
       signedIn: s.auth?.stage === "ready",
-      lang: s.settings?.lang ?? "en", // the tile's, widget's and notification buttons' own words (Status.kt words)
+      lang: s.settings?.lang ?? "fa", // Raman Fox: Persian by default; the tile's, widget's and notification buttons' own words (Status.kt words)
     });
     if (status !== told) {
       told = status;

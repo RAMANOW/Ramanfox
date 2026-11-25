@@ -4,10 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"> <!-- the phone apps (desktop windows ignore it); iOS zooms into a focused field otherwise -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'">
-<title>Foxhole</title>
+<title>Raman Fox</title>
 <link rel="stylesheet" href="style.css">
 <script src="fa.js" defer></script>
 <script src="ru.js" defer></script>
+<script src="ckb.js" defer></script>
 <script src="app.js" defer></script>
 <script src="fox3d.js" defer></script>
 </head>
@@ -201,7 +202,7 @@
   <div class="scroll">
     <div class="group" id="lang-group" hidden>
       <div class="label"><svg class="i"><use href="#i-globe"/></svg>Language</div>
-      <div class="seg small three" id="lang" data-v="0"><span class="thumb"></span><button type="button" data-lang="en" lang="en">English</button><button type="button" data-lang="fa" lang="fa">فارسی</button><button type="button" data-lang="ru" lang="ru">Русский</button></div>
+      <div class="seg small four" id="lang" data-v="0"><span class="thumb"></span><button type="button" data-lang="fa" lang="fa">فارسی</button><button type="button" data-lang="ckb" lang="ckb">کوردی</button><button type="button" data-lang="en" lang="en">English</button><button type="button" data-lang="ru" lang="ru">Русский</button></div>
     </div>
     <div class="group desktop-only" id="autostart-group" hidden>
       <div class="row-line">
@@ -304,7 +305,7 @@
     </div>
     <div class="group about">
       <svg class="logo"><use href="#fox"/></svg>
-      <div class="grow"><b>Foxhole <span id="about-ver"></span></b><span id="about-update">Firefox's free VPN for your whole system. Unofficial, not affiliated with Mozilla.</span></div>
+      <div class="grow"><b>Foxhole <span id="about-ver"></span></b><span id="about-update">Firefox's free VPN for your whole system. Unofficial, not affiliated with Mozilla.</span><span class="credit" data-brand-keep>Based on Foxhole VPN by Diercohen (MIT License)</span></div>
       <button class="btn" id="open-repo"><svg class="i"><use href="#i-github"/></svg>GitHub</button>
     </div>
   </div>

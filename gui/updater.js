@@ -77,11 +77,11 @@ export const ASSET = {
   win: (v) => `Foxhole-${v}-setup.exe`, // x64: Windows on Arm runs it too
   appimage: (v) => `Foxhole-${v}.AppImage`, // x64
   deb: (v) => `foxhole-desktop_${v}_amd64.deb`,
-  apk: (v) => `phone-and-TV-android-foxhole-${v}.apk`, // every phone's and TV's (.github/workflows/release.yml)
+  apk: (v) => `raman-fox-${v}.apk`, // Raman Fox: every phone's and TV's, from RAMANOW/raman-fox's releases (.github/workflows/release.yml)
 };
 // The names before: a release has its APK by this one too (release.yml), for Foxhole 1.0.0 to update itself, and a
 // download by that one is cleared once its version is in
-const LEGACY = { apk: (v) => `phone-and-TV-android-${v}.apk` };
+const LEGACY = { apk: (v) => `raman-fox-${v}.apk` }; // Raman Fox has no older name
 
 /** The versions of this kind's file in `dir`: { version, name } for each complete one (not a .part). */
 function downloaded(dir, kind) {

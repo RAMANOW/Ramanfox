@@ -1,59 +1,29 @@
-# A version tag (git tag v1.2.3 && git push origin v1.2.3) builds the desktop app for macOS (Apple chip and Intel),
-# Windows and Linux, and the Android app (one APK for every phone and TV), and puts them all in a draft release. Check it,
-# then Publish: that's the download for everyone, and what installed desktop apps update themselves to (gui/updater.js
-# looks for the files by the names gui/package.json gives them).
+# Raman Fox: the Android app (one APK for every phone and Android TV), built from this repo.
+# - Run it by hand (Actions → Release → Run workflow): the APK is an artifact of the run.
+# - Or push a version tag (git tag v1.0.0 && git push origin v1.0.0): the APK also goes into a draft release, named
+#   raman-fox-<version>.apk, which is the name the app's updater looks for (gui/updater.js).
+# Signing: the secrets RAMANFOX_KEYSTORE_BASE64, RAMANFOX_KEYSTORE_PASSWORD and RAMANFOX_KEY_ALIAS if they are set,
+# else the debug key (such an APK can't update one signed with the release key: uninstall first).
 name: Release
 
 on:
+  workflow_dispatch:
   push:
     tags: ["v*.*.*"]
 
 jobs:
-  build:
-    strategy:
-      fail-fast: false # one system's build failing still leaves the others for the release
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24 # Electron's installer needs 22.12 or newer
-          cache: npm
-          cache-dependency-path: |
-            package-lock.json
-            gui/package-lock.json
-      - run: npm ci
-      - name: Build
-        working-directory: gui
-        shell: bash
-        run: |
-          npm ci
-          npm pkg set version="${GITHUB_REF_NAME#v}" # the tag's: in the file names, and what the app's updater compares
-          npm run dist -- --publish never
-      - uses: actions/upload-artifact@v7
-        with:
-          name: ${{ matrix.os }}
-          path: |
-            gui/release/*.dmg
-            gui/release/*.exe
-            gui/release/*.deb
-            gui/release/*.AppImage
-          if-no-files-found: error
-
   android:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
           cache-dependency-path: |
             package-lock.json
             mobile/package-lock.json
-      - uses: actions/setup-java@v5
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
@@ -62,42 +32,42 @@ jobs:
       - name: Build
         shell: bash
         env:
-          KEYSTORE_BASE64: ${{ secrets.FOXHOLE_KEYSTORE_BASE64 }}
-          FOXHOLE_KEYSTORE_PASSWORD: ${{ secrets.FOXHOLE_KEYSTORE_PASSWORD }}
-          FOXHOLE_KEY_ALIAS: ${{ secrets.FOXHOLE_KEY_ALIAS }}
+          KEYSTORE_BASE64: ${{ secrets.RAMANFOX_KEYSTORE_BASE64 }}
+          RAMANFOX_KEYSTORE_PASSWORD: ${{ secrets.RAMANFOX_KEYSTORE_PASSWORD }}
+          RAMANFOX_KEY_ALIAS: ${{ secrets.RAMANFOX_KEY_ALIAS }}
         run: |
-          v="${GITHUB_REF_NAME#v}"
-          npm pkg set version="$v" # the APK's versionName and versionCode come from it
-          # the release key, so a new APK installs over the last one; without the secret, the debug key
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            v="${GITHUB_REF_NAME#v}"
+            npm pkg set version="$v" # the APK's versionName and versionCode come from it
+          else
+            v="$(node -p "require('./package.json').version")"
+          fi
           if [ -n "$KEYSTORE_BASE64" ]; then
             echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
-            export FOXHOLE_KEYSTORE="$RUNNER_TEMP/release.jks"
+            export RAMANFOX_KEYSTORE="$RUNNER_TEMP/release.jks"
           fi
           cd mobile
           npm ci
-          npm run build
-          # one APK for phones and Android TV (it finds it's on a TV when it starts)
-          mv android/app/build/outputs/apk/release/app-universal-release.apk "$GITHUB_WORKSPACE/phone-and-TV-android-foxhole-$v.apk"
-          # the same file by its old name: Foxhole 1.0.0 looks for that one to update itself (gui/updater.js LEGACY)
-          cp "$GITHUB_WORKSPACE/phone-and-TV-android-foxhole-$v.apk" "$GITHUB_WORKSPACE/phone-and-TV-android-$v.apk"
-      - uses: actions/upload-artifact@v7
+          npm run build # arm64-v8a, armeabi-v7a and x86_64 (android/gradle.properties), and the universal APK
+          mv android/app/build/outputs/apk/release/app-universal-release.apk "$GITHUB_WORKSPACE/raman-fox-$v.apk"
+      - uses: actions/upload-artifact@v4
         with:
-          name: android
-          path: phone-and-TV-android-*.apk
+          name: raman-fox-android
+          path: raman-fox-*.apk
           if-no-files-found: error
 
   release:
-    needs: [build, android]
-    if: ${{ !cancelled() }} # with what did build; the draft shows what's missing
+    needs: [android]
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@v4
         with:
           path: out
           merge-multiple: true
-      - name: Draft the release, or add to it (a re-run, or a release made by hand)
+      - name: Draft the release, or add to it
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -105,5 +75,5 @@ jobs:
           if gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1; then
             gh release upload "$GITHUB_REF_NAME" out/* --clobber
           else
-            gh release create "$GITHUB_REF_NAME" out/* --draft --title "Foxhole ${GITHUB_REF_NAME#v}" --generate-notes
+            gh release create "$GITHUB_REF_NAME" out/* --draft --title "Raman Fox ${GITHUB_REF_NAME#v}" --generate-notes
           fi

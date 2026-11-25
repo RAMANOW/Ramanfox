@@ -6,7 +6,7 @@ import { SafeAreaProvider, initialWindowMetrics, useSafeAreaInsets } from "react
 import { WebView, type WebViewMessageEvent } from "react-native-webview";
 import Core from "./specs/NativeFoxhole";
 
-const REPO = "https://github.com/Diercohen/foxhole-vpn";
+const REPO = "https://github.com/RAMANOW/raman-fox"; // Raman Fox's own repo (links and releases)
 /** What the window may open, as gui/main.js. */
 const TELEGRAM = /^tg:\/\/socks\?server=127\.0\.0\.1&port=\d{1,5}$/;
 const LINKS: Record<string, string> = {
@@ -238,15 +238,15 @@ function OldWebView({ pkg, major }: { pkg: string; major: number }) {
       <StatusBar barStyle="light-content" />
       <Text style={styles.oldTitle}>Update {app}</Text>
       <Text style={styles.oldText}>
-        Foxhole's screens run in {app}, and this {Platform.isTV ? "TV" : "phone"} has version {major} of it: Foxhole needs {NEEDS_WEBVIEW} or later.
-        Update it from Google Play or your app store, then open Foxhole again.
+        Raman Fox's screens run in {app}, and this {Platform.isTV ? "TV" : "phone"} has version {major} of it: Raman Fox needs {NEEDS_WEBVIEW} or later.
+        Update it from Google Play or your app store, then open Raman Fox again.
       </Text>
       <Pressable style={styles.oldButton} onPress={() => void Linking.openURL(`https://play.google.com/store/apps/details?id=${pkg}`)}>
         <Text style={styles.oldButtonText}>Open in Google Play</Text>
       </Pressable>
       {/* Foxhole can't update itself from here (its core needs the window): its releases, should a newer one need less */}
       <Pressable style={styles.oldLink} onPress={() => void Linking.openURL(LINKS.releases).catch(() => {})}>
-        <Text style={styles.oldLinkText}>Foxhole's latest version</Text>
+        <Text style={styles.oldLinkText}>Raman Fox's latest version</Text>
       </Pressable>
     </View>
   );

@@ -53,7 +53,7 @@ class FoxholeTile : TileService() {
     val tile = qsTile ?: return
     val s = Status.read(this)
     tile.state = if (s.on || s.busy) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
-    tile.label = "Foxhole"
+    tile.label = "Raman Fox"
     val w = Status.words(this)
     if (Build.VERSION.SDK_INT >= 29) tile.subtitle = if (s.on && !s.busy) s.where else w.getString(if (s.busy) R.string.connecting else if (s.paused) R.string.paused else R.string.widget_off)
     tile.updateTile()

@@ -1385,7 +1385,7 @@ export class Controller extends EventEmitter {
 
   /** Settings → Language: the window's (it draws itself anew), the tray's and the notification's. */
   setLang(lang) {
-    if (lang === "en" || lang === "fa" || lang === "ru") return this.#changeSetting({ lang });
+    if (lang === "en" || lang === "fa" || lang === "ckb" || lang === "ru") return this.#changeSetting({ lang });
   }
 
   /** Smart DNS for the home's TV, console or iPhone: blocked and sanctioned sites through the VPN, set as their DNS server. */

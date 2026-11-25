@@ -1,13 +1,15 @@
 // The window: draws the state the main process sends (controller.js state()) and asks it for actions.
 const fh = window.foxhole;
 
-// ── Its language: English as written here, Persian (fa.js), right to left, or Russian (ru.js) ───────────────
+// ── Its language: English as written here, Persian (fa.js), right to left, Kurdish Sorani (ckb.js, right to left,
+// Persian where it has no words of its own), or Russian (ru.js). Raman Fox: Persian until the user picks another ──
 // Settings → Language: kept here, to draw in it from the start, and in settings.json (the tray's and notification's)
 let langSaved = null;
 try {
   langSaved = localStorage.getItem("lang");
 } catch {} // no storage
-const LANG = langSaved ?? "en";
+const LANG = langSaved ?? "fa"; // Raman Fox: Persian by default (Foxhole: English)
+const RTL = LANG === "fa" || LANG === "ckb";
 const WORDS = foxholeTable(LANG); // null in English
 const norm = (s) => s.replace(/\s+/g, " ").trim();
 /** t`…${x}…`: these words in the window's language (fa.js and ru.js have them by their English, each value a {}). */
@@ -53,7 +55,7 @@ function localDate(key) {
   if (d - now > half) d.setFullYear(d.getFullYear() - 1);
   else if (now - d > half) d.setFullYear(d.getFullYear() + 1);
   try {
-    return new Intl.DateTimeFormat(LANG === "fa" ? "fa-IR-u-nu-latn" : LANG, { day: "numeric", month: "long" }).format(d);
+    return new Intl.DateTimeFormat(RTL ? "fa-IR-u-nu-latn" : LANG, { day: "numeric", month: "long" }).format(d);
   } catch {
     return null;
   }
@@ -86,11 +88,48 @@ function localize(s) {
   for (const a of s.accounts ?? []) a.error = tr(a.error);
   return s;
 }
+// ── Raman Fox's name where the words say Foxhole ──────────────────────────────────────────────────────────
+// Display only: the words (index.html, app.js, fa.js's keys, the core's texts) stay Foxhole's, so every translation still
+// matches; what's drawn says Raman Fox. foxhole:// links, ids and the code are left alone (a capital F only), and so
+// is anything inside [data-brand-keep]: the credit to Foxhole VPN that its MIT license asks for.
+const BRAND = RTL ? "رامان فاکس" : "Raman Fox";
+// "Foxhole Relay CA" stays: it is the relay certificate's real name (src/mitm.ts CA_NAME), as Android's settings list it
+const brand = (s) => (typeof s === "string" && s.includes("Foxhole") ? s.replace(/Foxhole(?! Relay CA)/g, BRAND) : s);
+const BRAND_ATTRS = ["title", "placeholder", "aria-label", "alt"];
+function brandNode(root) {
+  if (root.nodeType === Node.TEXT_NODE) {
+    if (/Foxhole(?! Relay CA)/.test(root.nodeValue) && !root.parentElement?.closest("[data-brand-keep]")) root.nodeValue = brand(root.nodeValue);
+    return;
+  }
+  if (root.nodeType !== Node.ELEMENT_NODE || root.closest("[data-brand-keep]")) return;
+  const words = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  while (words.nextNode()) {
+    const n = words.currentNode;
+    if (/Foxhole(?! Relay CA)/.test(n.nodeValue) && !n.parentElement?.closest("[data-brand-keep]")) n.nodeValue = brand(n.nodeValue);
+  }
+  for (const el of [root, ...root.querySelectorAll("*")])
+    for (const a of BRAND_ATTRS) {
+      const v = el.getAttribute?.(a);
+      if (v && /Foxhole(?! Relay CA)/.test(v)) el.setAttribute(a, brand(v));
+    }
+}
+/** Once, then on every change the window draws. */
+function brandPage() {
+  document.title = brand(document.title);
+  brandNode(document.body);
+  new MutationObserver((changes) => {
+    for (const c of changes) {
+      if (c.type === "childList") c.addedNodes.forEach(brandNode);
+      else if (c.type === "characterData") brandNode(c.target);
+      else if (c.type === "attributes") brandNode(c.target);
+    }
+  }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: BRAND_ATTRS });
+}
 /** index.html's own words: elements marked data-t whole (words with markup in them), then each text, and the attributes read out. */
 function translatePage() {
   document.documentElement.lang = LANG;
   if (!WORDS) return;
-  if (LANG === "fa") document.documentElement.dir = "rtl";
+  if (RTL) document.documentElement.dir = "rtl";
   for (const el of document.querySelectorAll("[data-t]")) el.innerHTML = t([el.innerHTML]);
   const words = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   while (words.nextNode()) {
@@ -105,7 +144,8 @@ function translatePage() {
     }
 }
 translatePage();
-const LANG_NAMES = { en: "English", fa: "فارسی", ru: "Русский" };
+brandPage();
+const LANG_NAMES = { fa: "فارسی", ckb: "کوردی", en: "English", ru: "Русский" };
 document.getElementById("lang").dataset.v = Object.keys(LANG_NAMES).indexOf(LANG);
 
 /** Settings → Language: kept here and in settings.json, then the window's drawn anew in it. */

@@ -12,7 +12,7 @@ import { appOf, type Split } from "./split.js";
 
 /** The port the page waits on (the TV's sign-in has 47533). */
 export const SHARE_PORT = 47534;
-const PACKAGE = "io.github.diercohen.foxhole";
+const PACKAGE = "com.ramanow.ramanfox"; // Raman Fox's applicationId (Foxhole's: io.github.diercohen.foxhole)
 
 /** What a link carries: split tunneling with its sites (apps are each device's own), the relay, or both. */
 export interface Shared {
@@ -100,7 +100,7 @@ export interface ShareServer {
  * else null) for it to download. A download under way when it's closed still finishes.
  */
 export async function serveShare(opts: { name: string; version: string; apk: string | null; port?: number }): Promise<ShareServer> {
-  const file = `/Foxhole-${opts.version}.apk`;
+  const file = `/RamanFox-${opts.version}.apk`;
   const server = http.createServer((req, res) => {
     const path = (req.url ?? "/").split("?")[0];
     let size = 0;
@@ -111,7 +111,7 @@ export async function serveShare(opts: { name: string; version: string; apk: str
     }
     if (req.method !== "GET") return void res.writeHead(405).end();
     if (path === file && size) {
-      res.writeHead(200, { "content-type": "application/vnd.android.package-archive", "content-length": size, "content-disposition": `attachment; filename="Foxhole-${opts.version}.apk"` });
+      res.writeHead(200, { "content-type": "application/vnd.android.package-archive", "content-length": size, "content-disposition": `attachment; filename="RamanFox-${opts.version}.apk"` });
       return void createReadStream(opts.apk as string).pipe(res);
     }
     if (path !== "/") return void res.writeHead(404).end();
@@ -125,19 +125,19 @@ export async function serveShare(opts: { name: string; version: string; apk: str
 function page(name: string, version: string, apk: string | null, size: number): string {
   const from = name.replace(/[<>&"']/g, (c) => `&#${c.charCodeAt(0)};`);
   const get = apk
-    ? `<a class="btn" href="${apk}">Download Foxhole ${version}</a>
+    ? `<a class="btn" href="${apk}">Download Raman Fox ${version}</a>
 <p class="fine">For Android phones and TVs · ${Math.round(size / 1e6)} MB. Chrome warns before it downloads an app from outside Google Play: tap <b>Keep</b>, then <b>Download anyway</b>. Let it install apps when Android asks, install, then come back here.</p>`
-    : `<p>Foxhole for Android, Windows, Mac and Linux is on <a href="https://github.com/Diercohen/foxhole-vpn/releases/latest">GitHub</a>; or get it from a phone that has it, on the same Wi-Fi: <b>Settings → Share Foxhole</b>.</p>`;
+    : `<p>Raman Fox for Android phones and TVs is on <a href="https://github.com/RAMANOW/raman-fox/releases/latest">GitHub</a>; or get it from a phone that has it, on the same Wi-Fi: <b>Settings → Share Raman Fox</b>.</p>`;
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Foxhole</title><style>body{font:17px/1.5 system-ui,sans-serif;background:#07060c;color:#f6f3fb;margin:0;padding:32px 24px;text-align:center}
+<title>Raman Fox</title><style>body{font:17px/1.5 system-ui,sans-serif;background:#07060c;color:#f6f3fb;margin:0;padding:32px 24px;text-align:center}
 .btn{display:inline-block;margin:14px 0;padding:14px 26px;border-radius:14px;background:#ff7a1a;color:#fff;font-weight:700;text-decoration:none;border:0;font:inherit}
 p{color:#cfc8dc}.fine{font-size:14px;color:#9d95ad}a{color:#ffb070}h3{margin-top:36px}
 input{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:1px solid #3a3346;background:#15121d;color:#f6f3fb;font:13px ui-monospace,monospace}</style></head>
-<body><h2>Foxhole ${from ? `from ${from}` : ""}</h2><p>Firefox's free VPN, on this device too.</p>
+<body><h2>Raman Fox ${from ? `from ${from}` : ""}</h2><p>Firefox's free VPN, on this device too.</p>
 ${get}
-<div id="s" hidden><h3>Settings from ${from || "Foxhole"}</h3><p>Their VPN relay or split tunneling, for Foxhole here.</p>
-<a class="btn" id="open" hidden>Open in Foxhole</a>
-<p class="fine">Or copy this link, then in Foxhole: <b>Settings → Import settings</b>.</p>
+<div id="s" hidden><h3>Settings from ${from || "Raman Fox"}</h3><p>Their VPN relay or split tunneling, for Raman Fox here.</p>
+<a class="btn" id="open" hidden>Open in Raman Fox</a>
+<p class="fine">Or copy this link, then in Raman Fox: <b>Settings → Import settings</b>.</p>
 <input id="link" readonly><button class="btn" id="copy" type="button">Copy the link</button></div>
 <script>var d=location.hash.slice(1);if(/^[\\w-]+$/.test(d)){var l="foxhole://settings?d="+d,o=document.getElementById("open");
 document.getElementById("s").hidden=false;document.getElementById("link").value=l;

@@ -123,7 +123,7 @@ object Phone {
    * on screen, to turn it on there).
    */
   private fun wifiAccess(ctx: Context, id: Int) {
-    val activity = FoxholeActivity.shown ?: return Core.fail(id, "open Foxhole to allow it")
+    val activity = FoxholeActivity.shown ?: return Core.fail(id, "open Raman Fox to allow it")
     val prefs = ctx.getSharedPreferences("foxhole", Context.MODE_PRIVATE)
     fun open(action: String, data: Uri? = null) =
       try {
@@ -162,7 +162,7 @@ object Phone {
   /** `skip`: split tunneling's direct apps, left out of the VPN; `only`: when any, the only apps in it (packages). */
   private fun vpnStart(ctx: Context, id: Int, port: Int, skip: ArrayList<String>, only: ArrayList<String>) {
     val question = VpnService.prepare(ctx) ?: return FoxholeService.vpnOn(ctx, id, port, skip, only)
-    val activity = FoxholeActivity.shown ?: return Core.fail(id, "open Foxhole to allow its VPN")
+    val activity = FoxholeActivity.shown ?: return Core.fail(id, "open Raman Fox to allow its VPN")
     consent = { ok -> if (ok) FoxholeService.vpnOn(ctx, id, port, skip, only) else Core.fail(id, "Android's VPN wasn't allowed") }
     @Suppress("DEPRECATION") main.post { activity.startActivityForResult(question, FoxholeActivity.VPN_CONSENT) }
   }

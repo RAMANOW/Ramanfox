@@ -64,7 +64,7 @@ class FoxholeService : VpnService() {
     try {
       tunnelOff()
       val builder = Builder()
-        .setSession("Foxhole")
+        .setSession("Raman Fox")
         .setMtu(8500)
         .addAddress("198.18.0.1", 32)
         .addRoute("0.0.0.0", 0)
@@ -77,7 +77,7 @@ class FoxholeService : VpnService() {
       val allowed = (only - packageName).count { pkg -> installed { builder.addAllowedApplication(pkg) } }
       if (allowed == 0) for (pkg in skip + packageName) installed { builder.addDisallowedApplication(pkg) }
       if (Build.VERSION.SDK_INT >= 29) builder.setMetered(false) // as metered as the network under it (Android 10+)
-      val fd = builder.establish() ?: error("Android didn't let Foxhole start its VPN")
+      val fd = builder.establish() ?: error("Android didn't let Raman Fox start its VPN")
       val config = File(filesDir, "tunnel.yml").apply { writeText(tunnelConfig(port)) }
       // the tunnel uses the descriptor but leaves closing it to us (tunnelOff)
       if (!TProxyService.TProxyStartService(config.path, fd.fd)) {
@@ -138,7 +138,7 @@ class FoxholeService : VpnService() {
     getSystemService(NotificationManager::class.java)
       .createNotificationChannel(NotificationChannel(CHANNEL, "Connection", NotificationManager.IMPORTANCE_LOW))
     val w = Status.words(this)
-    val (title, text, paused) = note ?: Triple("Foxhole", w.getString(R.string.starting), false)
+    val (title, text, paused) = note ?: Triple("Raman Fox", w.getString(R.string.starting), false)
     val button = { action: String -> PendingIntent.getService(this, 1, Intent(this, FoxholeService::class.java).setAction(action), PendingIntent.FLAG_IMMUTABLE) }
     return NotificationCompat.Builder(this, CHANNEL)
       .setSmallIcon(R.drawable.ic_notify)

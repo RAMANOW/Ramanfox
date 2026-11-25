@@ -18,7 +18,7 @@ export interface Settings {
   proxyOnly?: boolean; // connecting doesn't go on to whole-system mode, the default: the mode last picked (TUI, desktop app)
   smartDns?: boolean; // this computer is the DNS server of the home's TV, console, iPhone: blocked sites through the VPN (smartdns.ts)
   networks?: Record<string, NetRule>; // what joining a network does, by its name as netinfo.ts network() gives it
-  lang?: "en" | "fa" | "ru"; // the desktop and phone apps' language (Settings → Language): their window, tray and notification
+  lang?: "en" | "fa" | "ckb" | "ru"; // the desktop and phone apps' language (Settings → Language): their window, tray and notification
   hiddenSites?: string[]; // sites left out of the Data list (TUI and app), till its "show hidden" switch is on
 }
 
@@ -102,7 +102,7 @@ export function parseSettings(json: string): Settings {
     ...(o.proxyOnly === true ? { proxyOnly: true } : {}),
     ...(o.smartDns === true ? { smartDns: true } : {}),
     ...(parseNetworks(o.networks) && { networks: parseNetworks(o.networks) }),
-    ...(o.lang === "en" || o.lang === "fa" || o.lang === "ru" ? { lang: o.lang } : {}),
+    ...(o.lang === "en" || o.lang === "fa" || o.lang === "ckb" || o.lang === "ru" ? { lang: o.lang } : {}),
     ...(parseHidden(o.hiddenSites) && { hiddenSites: parseHidden(o.hiddenSites) }),
   };
 }

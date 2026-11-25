@@ -1,9 +1,10 @@
 <resources>
     <!-- on a phone set to Persian, disguise mode's name in the launcher: its own calculator's -->
     <string name="calculator">ماشین‌حساب</string>
-    <!-- Foxhole in Persian (Settings → Language, or a phone set to Persian): the tile, widget and notification -->
+    <string name="app_name">رامان فاکس</string>
+    <!-- Raman Fox in Persian (Settings → Language, or a phone set to Persian): the tile, widget and notification -->
     <string name="widget_off">خاموش</string>
-    <string name="widget_description">حجم باقی‌ماندهٔ VPN در این ماه، و روشن بودن Foxhole</string>
+    <string name="widget_description">حجم باقی‌ماندهٔ VPN در این ماه، و روشن بودن رامان فاکس</string>
     <string name="connecting">در حال اتصال…</string>
     <string name="on_at">روشن · %1$s</string>
     <string name="paused">مکث</string>

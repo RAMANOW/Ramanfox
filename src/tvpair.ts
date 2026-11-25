@@ -194,10 +194,10 @@ function page(name: string, want: TvWant): string {
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${title}</title><style>body{font:17px/1.5 system-ui,sans-serif;background:#07060c;color:#f6f3fb;margin:0;padding:32px 24px;text-align:center}
 a{display:inline-block;margin:18px 0;padding:14px 26px;border-radius:14px;background:${relay ? "#9b4dff" : "#ff7a1a"};color:#fff;font-weight:700;text-decoration:none}p{color:#cfc8dc}</style></head>
-<body><h2>${title}</h2><p>${relay ? "Open this in <b>Foxhole</b>, with your VPN relay set up, to send it." : `Open this in <b>Foxhole</b>, signed in, to send ${it} a sign-in.`}</p>
-<a id="open" href="#">Open in Foxhole</a>
-<p>No button? Open Foxhole on this phone or a computer on the same Wi-Fi: <b>${relay ? "Settings → VPN relay → Send to a TV or phone" : "Settings → Sign in a TV or phone"}</b>, and scan the code there or type the code shown on the other screen.</p>
-<script>document.getElementById("open").href="intent://tv?l="+encodeURIComponent(location.href)+"#Intent;scheme=foxhole;package=io.github.diercohen.foxhole;end";</script>
+<body><h2>${title}</h2><p>${relay ? "Open this in <b>Raman Fox</b>, with your VPN relay set up, to send it." : `Open this in <b>Raman Fox</b>, signed in, to send ${it} a sign-in.`}</p>
+<a id="open" href="#">Open in Raman Fox</a>
+<p>No button? Open Raman Fox on this phone or a computer on the same Wi-Fi: <b>${relay ? "Settings → VPN relay → Send to a TV or phone" : "Settings → Sign in a TV or phone"}</b>, and scan the code there or type the code shown on the other screen.</p>
+<script>document.getElementById("open").href="intent://tv?l="+encodeURIComponent(location.href)+"#Intent;scheme=foxhole;package=com.ramanow.ramanfox;end";</script>
 </body></html>`;
 }
 

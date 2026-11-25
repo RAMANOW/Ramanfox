@@ -1,0 +1,14 @@
+<resources>
+    <!-- Raman Fox in Kurdish Sorani (Settings → Language, or a phone set to Central Kurdish): the tile, widget and notification -->
+    <string name="app_name">رامان فاکس</string>
+    <string name="calculator">ژمێرەر</string>
+    <string name="widget_off">کوژاوە</string>
+    <string name="widget_description">داتای VPN ی ماوەی ئەم مانگە، و ئایا رامان فاکس هەڵکراوە</string>
+    <string name="connecting">پەیوەست دەبێت…</string>
+    <string name="on_at">هەڵکراوە · %1$s</string>
+    <string name="paused">ڕاگیراوە</string>
+    <string name="pause">ڕاگرتن</string>
+    <string name="resume">بەردەوامبوون</string>
+    <string name="disconnect">پچڕاندن</string>
+    <string name="starting">دەست پێ دەکات…</string>
+</resources>

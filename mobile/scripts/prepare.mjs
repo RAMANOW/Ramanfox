@@ -69,7 +69,7 @@ const { version } = JSON.parse(readFileSync(join(root, "package.json"), "utf8"))
 mkdirSync(project, { recursive: true });
 writeFileSync(join(project, "package.json"), JSON.stringify({ name: "foxhole-core", version, type: "module" }, null, 2));
 for (const f of ["controller.js", "updater.js"]) cpSync(join(root, "gui", f), join(project, f));
-for (const f of ["fa.js", "ru.js"]) cpSync(join(root, "gui/renderer", f), join(project, f)); // the notification's words
+for (const f of ["fa.js", "ru.js", "ckb.js"]) cpSync(join(root, "gui/renderer", f), join(project, f)); // the notification's words (Raman Fox: ckb.js too)
 cpSync(join(mobile, "node/main.mjs"), join(project, "main.mjs"));
 cpSync(join(root, "dist"), join(project, "dist"), { recursive: true, filter: (src) => !src.endsWith(".png") }); // the screenshots are the window's
 
@@ -86,4 +86,4 @@ writeFileSync(page, `${html.slice(0, at)}<script src="phone.js"></script>\n${htm
 const shots = join(www, "dist/assets/relay");
 mkdirSync(shots, { recursive: true });
 for (const f of readdirSync(join(root, "assets/relay"))) if (f.endsWith(".png")) cpSync(join(root, "assets/relay", f), join(shots, f));
-console.log(`ready: Foxhole ${version} in ${assets}`);
+console.log(`ready: Raman Fox ${version} in ${assets}`);
