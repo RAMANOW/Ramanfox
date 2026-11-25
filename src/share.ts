@@ -127,7 +127,7 @@ function page(name: string, version: string, apk: string | null, size: number): 
   const get = apk
     ? `<a class="btn" href="${apk}">Download Raman Fox ${version}</a>
 <p class="fine">For Android phones and TVs · ${Math.round(size / 1e6)} MB. Chrome warns before it downloads an app from outside Google Play: tap <b>Keep</b>, then <b>Download anyway</b>. Let it install apps when Android asks, install, then come back here.</p>`
-    : `<p>Raman Fox for Android phones and TVs is on <a href="https://github.com/RAMANOW/raman-fox/releases/latest">GitHub</a>; or get it from a phone that has it, on the same Wi-Fi: <b>Settings → Share Raman Fox</b>.</p>`;
+    : `<p>Raman Fox for Android phones and TVs is on <a href="https://github.com/RAMANOW/Ramanfox/releases/latest">GitHub</a>; or get it from a phone that has it, on the same Wi-Fi: <b>Settings → Share Raman Fox</b>.</p>`;
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Raman Fox</title><style>body{font:17px/1.5 system-ui,sans-serif;background:#07060c;color:#f6f3fb;margin:0;padding:32px 24px;text-align:center}
 .btn{display:inline-block;margin:14px 0;padding:14px 26px;border-radius:14px;background:#ff7a1a;color:#fff;font-weight:700;text-decoration:none;border:0;font:inherit}

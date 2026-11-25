@@ -32,10 +32,10 @@ console.log("ok - release notes parsed from the feed");
 
 // Markdown's other marks, as GitHub's HTML has them: nested and numbered lists, a loose item, italic, struck, a code block;
 // a link keeps its address only into the repo (all the window opens)
-const html = `<ul><li><em>it</em> <del>old</del> <a href="https://github.com/RAMANOW/raman-fox/pull/3">#3</a> <a href="https://example.com">out</a><ul><li>child</li></ul></li></ul>
+const html = `<ul><li><em>it</em> <del>old</del> <a href="https://github.com/RAMANOW/Ramanfox/pull/3">#3</a> <a href="https://example.com">out</a><ul><li>child</li></ul></li></ul>
 <ol start="2"><li><p>loose</p><p>more</p></li><li>next</li></ol><h3>Fixes</h3><pre><code>a\n  b\n</code></pre>`;
 assert.deepEqual(noteBlocks(html), [
-  { kind: "li", depth: 1, mark: "•", spans: [{ text: "it", i: true }, { text: " " }, { text: "old", s: true }, { text: " " }, { text: "#3", href: "https://github.com/RAMANOW/raman-fox/pull/3" }, { text: " " }, { text: "out" }] },
+  { kind: "li", depth: 1, mark: "•", spans: [{ text: "it", i: true }, { text: " " }, { text: "old", s: true }, { text: " " }, { text: "#3", href: "https://github.com/RAMANOW/Ramanfox/pull/3" }, { text: " " }, { text: "out" }] },
   { kind: "li", depth: 2, mark: "•", spans: [{ text: "child" }] },
   { kind: "li", depth: 1, mark: "2.", spans: [{ text: "loose" }] },
   { kind: "p", depth: 1, spans: [{ text: "more" }] },

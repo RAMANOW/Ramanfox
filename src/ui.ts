@@ -192,7 +192,7 @@ export function grid(titles: string[], rows: (string[] | null)[], { caption = ""
 }
 
 // Raman Fox: links and update checks go to its own repo, never to Foxhole's
-export const REPO_URL = "https://github.com/RAMANOW/raman-fox";
+export const REPO_URL = "https://github.com/RAMANOW/Ramanfox";
 // OSC 8 makes the text a link in terminals that support it; clicks we receive ourselves are handled by linkAt()
 export const repoLink = `\x1b]8;;${REPO_URL}\x1b\\${REPO_URL}\x1b]8;;\x1b\\`;
 

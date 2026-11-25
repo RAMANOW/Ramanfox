@@ -6,7 +6,7 @@ import { SafeAreaProvider, initialWindowMetrics, useSafeAreaInsets } from "react
 import { WebView, type WebViewMessageEvent } from "react-native-webview";
 import Core from "./specs/NativeFoxhole";
 
-const REPO = "https://github.com/RAMANOW/raman-fox"; // Raman Fox's own repo (links and releases)
+const REPO = "https://github.com/RAMANOW/Ramanfox"; // Raman Fox's own repo (links and releases)
 /** What the window may open, as gui/main.js. */
 const TELEGRAM = /^tg:\/\/socks\?server=127\.0\.0\.1&port=\d{1,5}$/;
 const LINKS: Record<string, string> = {
